@@ -1,7 +1,19 @@
 <!-- search-bar.component.html -->
+<div class="weather-container">
+  <h2>Welcome to the Weather Forecast </h2>
 <div class="input-group">
     <input type="text" class="form-control" [(ngModel)]="cityName" placeholder="Enter a city">
     <div class="input-group-append">
       <button class="btn btn-primary" (click)="searchCity()">Search</button>
     </div>
   </div>
+  <div *ngIf="WeatherData">
+    <h3>{{ WeatherData.name }}, {{ WeatherData.sys.country }}</h3>
+    <h4>Current Weather : </h4>
+    <h5>Feels Like : {{feelsLike}}</h5>
+    <h5>pressure : {{pressure}}</h5>
+    <h5>temp  : {{temp}}</h5>
+    <h5>Max Temperature : {{temp_max}}</h5> 
+     <h5>Min Temperature : {{temp_min}}</h5>
+  </div>
+</div>
