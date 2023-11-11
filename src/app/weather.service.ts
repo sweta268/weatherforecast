@@ -11,7 +11,17 @@ export class WeatherService {
 
   constructor(private http: HttpClient) { }
 
-  getWeather(city: string) {
-    return this.http.get(`${this.url}/weather?q=${city}&appid=${this.key}`);
+  
+  getWeather(city: string,selectedUnit:string) {
+    return this.http.get(`${this.url}/weather?q=${city}&appid=${this.key}&units=${selectedUnit}`);
+  }
+  getFiveDayWeather(city: string,selectedUnit:string) {
+    return this.http.get(`${this.url}/forecast?q=${city}&appid=${this.key}&units=${selectedUnit}`);
+  }
+  getWeatherBylatLong(latitude: string,longitude:string,selectedUnit:string) {
+    return this.http.get(`${this.url}/weather?lat=${latitude}&lon=${longitude}&appid=${this.key}&units=${selectedUnit}`);
+  }
+  getFiveDayWeatherBylatLong(latitude: string,longitude:string,selectedUnit:string) {
+    return this.http.get(`${this.url}/forecast?lat=${latitude}&lon=${longitude}&appid=${this.key}&units=${selectedUnit}`);
   }
 }
