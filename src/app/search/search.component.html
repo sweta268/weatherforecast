@@ -12,11 +12,19 @@
       placeholder="Search Weather by a city"
     />
     <div class="input-group-append">
-      <button class="btn btn-primary" (click)="searchWeather('imperial')">
-        Fahrenheit
+      <button
+        tooltip="Farenheit"
+        class="btn btn-primary"
+        (click)="searchWeather('imperial')"
+      >
+        &deg;F
       </button>
-      <button class="btn btn-primary" (click)="searchWeather('metric')">
-        Celsius
+      <button
+        tooltip="Celsius"
+        class="btn btn-primary"
+        (click)="searchWeather('metric')"
+      >
+        &deg;C
       </button>
     </div>
   </div>
@@ -38,97 +46,36 @@
       placeholder="Enter Longitude"
     />
     <div class="input-group-append">
-      <button class="btn btn-primary" (click)="searchWeather('imperial')">
-        Fahrenheit
+      <button
+        tooltip="Farenheit"
+        class="btn btn-primary"
+        (click)="searchWeather('imperial')"
+      >
+        &deg;F
       </button>
-      <button class="btn btn-primary" (click)="searchWeather('metric')">
-        Celsius
+      <button
+        tooltip="Celsius"
+        class="btn btn-primary"
+        (click)="searchWeather('metric')"
+      >
+        &deg;C
       </button>
     </div>
   </div>
 
   <!-- Current Weather data -->
-  <div *ngIf="WeatherData" class="mb-4">
-    <h3 class="text-center">
-      {{ WeatherData.name }}, {{ WeatherData.sys.country }}
-    </h3>
-    <h4 class="text-center">
-      Displaying current weather in {{ temperatureUnit }}
-    </h4>
-    <table>
-      <tbody class="text-left">
-        <tr>
-          <td>
-            Temperature:
-            {{ temp }}
-          </td>
-          <td rowspan="5">
-            <img
-              [src]="overallWeathericon"
-              alt="Weather Icon"
-              class="img-fluid"
-            />
-          </td>
-        </tr>
-        <tr>
-          Feels Like:
-          {{
-            feelsLike
-          }}
-        </tr>
-        <tr>
-          Humidity:
-          {{
-            humidity
-          }}
-        </tr>
-        <tr>
-          Wind Speed:
-          {{
-            wind_speed
-          }}
-        </tr>
-        <tr>
-          Description:
-          {{
-            description
-          }}
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <app-current-weather
+    *ngIf="weatherData"
+    [WeatherData]="weatherData"
+  ></app-current-weather>
+
   <!-- Current Weather data -->
 
   <!-- 5 day Weather data -->
-  <table>
-    <thead class="text-left">
-      <tr>
-        <td *ngFor="let forecast of dailyWeatherData | keyvalue">
-          <div class="column">
-            <p class="date">
-              {{ forecast.key | date : "shortDate" }},
-              {{ forecast.key | date : "EEE" }}
-            </p>
-            <div *ngFor="let forecastDetail of forecast.value">
-              <div class="forecast-item">
-                <img
-                  [src]="forecastDetail.dailyWeatherIcon"
-                  alt="Weather Icon"
-                  class="img-fluid"
-                />
-                <p class="weather-description">
-                  {{ forecastDetail.weatherDescription }}
-                </p>
-                <p class="temperature">
-                  {{ forecastDetail.maxTemperature }} /
-                  {{ forecastDetail.minTemperature }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </thead>
-  </table>
+  <app-daily-weather
+    *ngIf="fiveDayWeather"
+    [FiveDayWeather]="fiveDayWeather"
+  ></app-daily-weather>
+
   <!-- 5 day Weather data -->
 </div>

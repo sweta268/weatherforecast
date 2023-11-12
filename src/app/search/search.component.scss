@@ -1,3 +1,4 @@
+//search.component.scss
 .container {
   margin-top: 20px;
 
@@ -53,7 +54,10 @@
   //     no-repeat center;
   //   background-size: cover;
   // }
-
+  .search-icon {
+    width: 5px;
+    height: 5px;
+  }
   table {
     margin-top: 20px;
     width: 100%;

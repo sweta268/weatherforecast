@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root',
@@ -7,7 +8,8 @@ import { Injectable } from '@angular/core';
 export class WeatherService {
   private key = 'cad9e13fc39df29887335cb223079816';
   private url = 'https://api.openweathermap.org/data/2.5';
-
+  currentWeatherData = new BehaviorSubject<any>(null);
+  fiveDayData = new BehaviorSubject<any>(null);
   constructor(private http: HttpClient) {}
 
   getWeather(city: string, selectedUnit: string) {
@@ -37,5 +39,11 @@ export class WeatherService {
     return this.http.get(
       `${this.url}/forecast?lat=${latitude}&lon=${longitude}&appid=${this.key}&units=${selectedUnit}`
     );
+  }
+  updateCurrentWeatherData(data: any) {
+    this.currentWeatherData.next(data);
+  }
+  updateFiveDayWeatherData(data: any) {
+    this.fiveDayData.next(data);
   }
 }

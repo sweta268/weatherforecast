@@ -1,0 +1,44 @@
+<!-- Current Weather data -->
+<div *ngIf="WeatherData" class="mb-4">
+  <h3 class="text-center">
+    {{ WeatherData?.name }}, {{ WeatherData?.sys?.country }}
+  </h3>
+  <h4 class="text-center">
+    Displaying current weather in {{ WeatherData.temperatureUnit }}
+  </h4>
+  <table>
+    <tbody class="text-center">
+      <tr>
+        <td>
+          <img
+            [src]="overallWeathericon"
+            alt="Weather Icon"
+            class="img-fluid"
+          />{{ temp }}
+          {{ description }}
+        </td>
+      </tr>
+      <tr>
+        Feels Like:
+        {{
+          feelsLike
+        }}
+      </tr>
+      <tr>
+        Humidity:
+        {{
+          humidity
+        }}
+        %
+      </tr>
+      <tr>
+        Wind Speed:
+        {{
+          wind_speed
+        }}
+        mph
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Current Weather data -->
