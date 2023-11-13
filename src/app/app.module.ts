@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   BrowserModule,
   provideClientHydration,
@@ -12,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { DailyWeatherComponent } from './daily-weather/daily-weather.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { DailyWeatherComponent } from './daily-weather/daily-weather.component';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
+    MatTooltipModule,
+    BrowserAnimationsModule,
   ],
   providers: [provideClientHydration()],
   bootstrap: [AppComponent],

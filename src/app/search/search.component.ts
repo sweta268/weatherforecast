@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './search.component.scss',
   providers: [DatePipe],
 })
-export class SearchComponent implements OnDestroy {
+export class SearchComponent implements OnInit, OnDestroy {
   cityName = '';
   weatherData: any;
   fiveDayWeather: any;
@@ -38,7 +38,17 @@ export class SearchComponent implements OnDestroy {
   ) {
     this.subscription = new Subscription();
   }
-
+  ngOnInit(): void {
+    //this.searchWeather('imperial'); //To get current weather and 5 day weather on page load
+  }
+  clearInput(input: string): void {
+    if (input == 'latitude' || input == 'longitude') {
+      this.cityName = '';
+    } else {
+      this.latitude = '';
+      this.longitude = '';
+    }
+  }
   onSubmit(form: NgForm) {
     this.errorMessage = '';
     this.submitclicked = true; //To handle validation error on city form
@@ -49,15 +59,15 @@ export class SearchComponent implements OnDestroy {
 
       this.submitclicked = false;
       this.searchWeather(this.temperatureUnit);
-      this.latitude = ''; //To clear latitude so users dont get confused between city and latitude
-      this.longitude = ''; //To clear longitude so users dont get confused between city and longitude
-      this.cityName = ''; //To clear latitude so users dont get confused between city and latitude
+      // this.latitude = ''; //To clear latitude so users dont get confused between city and latitude
+      // this.longitude = ''; //To clear longitude so users dont get confused between city and longitude
+      // this.cityName = ''; //To clear latitude so users dont get confused between city and latitude
     }
   }
 
   searchWeather(selectedUnit: string) {
     this.displaytemperatureUnit =
-      selectedUnit === 'imperial' ? 'Farenheit' : 'Celsius';
+      selectedUnit === 'imperial' ? 'Fahrenheit' : 'Celsius';
 
     if (this.cityName || (this.latitude && this.longitude)) {
       this.subscription = this.weatherService
