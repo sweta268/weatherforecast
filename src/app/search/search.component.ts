@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WeatherService } from '../weather.service';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -11,7 +12,7 @@ import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
   styleUrl: './search.component.scss',
   providers: [DatePipe],
 })
-export class SearchComponent {
+export class SearchComponent implements OnDestroy {
   cityName = '';
   weatherData: any;
   fiveDayWeather: any;
@@ -26,13 +27,16 @@ export class SearchComponent {
   latlongpattern = '^[0-9.]*$';
   submitclicked = false;
   latlongsubmitclicked = false;
+  private subscription!: Subscription;
 
   constructor(
     private router: Router,
     private weatherService: WeatherService,
     private httpClient: HttpClient,
     private datePipe: DatePipe
-  ) {}
+  ) {
+    this.subscription = new Subscription();
+  }
 
   onSubmit(form: NgForm) {
     this.submitclicked = true; //To handle validation error on city form
@@ -54,7 +58,7 @@ export class SearchComponent {
       selectedUnit === 'imperial' ? 'Farenheit' : 'Celsius';
 
     if (this.cityName || (this.latitude && this.longitude)) {
-      this.weatherService
+      this.subscription = this.weatherService
         .getWeather(this.cityName, selectedUnit, this.latitude, this.longitude) //To get current weather from service
         .subscribe((data) => {
           this.weatherData = data; //To display current weather
@@ -62,7 +66,7 @@ export class SearchComponent {
           this.weatherService.updateCurrentWeatherData(this.weatherData); //To update current weather data
         });
 
-      this.weatherService
+      this.subscription = this.weatherService
         .getFiveDayWeather(
           this.cityName,
           selectedUnit,
@@ -75,5 +79,8 @@ export class SearchComponent {
           this.weatherService.updateFiveDayWeatherData(this.fiveDayWeather); //To update 5 day weather data
         });
     }
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
