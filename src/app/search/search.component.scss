@@ -4,6 +4,9 @@
   form {
     width: 100%;
   }
+  .full-width-form {
+    width: 100%;
+  }
   .form-control {
     width: auto;
   }
@@ -11,6 +14,9 @@
     color: red;
     text-align: center;
   }
+  // .city-input {
+  //   width: 100%;
+  // }
   h2 {
     margin-top: 20px;
   }
@@ -24,6 +30,7 @@
       margin-right: 5px;
       margin-top: 5px;
       font-weight: bold;
+      width: fit-content;
     }
 
     input {

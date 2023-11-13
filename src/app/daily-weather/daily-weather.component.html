@@ -2,28 +2,24 @@
 <table *ngIf="FiveDayWeather">
   <thead class="text-left">
     <tr>
-      <td *ngFor="let forecast of dailyWeatherData | keyvalue">
+      <td *ngFor="let forecast of dailyForecast">
         <div class="column">
           <p class="date">
-            {{ forecast.key | date : "shortDate" }},
-            {{ forecast.key | date : "EEE" }}
+            {{ forecast.date | date : "shortDate" }},
+            {{ forecast.date | date : "EEE" }}
           </p>
-          <div *ngFor="let forecastDetail of forecast.value">
-            <div class="forecast-item">
-              <img
-                [src]="forecastDetail.dailyWeatherIcon"
-                alt="Weather Icon"
-                class="img-fluid"
-              />
-              <p class="temperature">
-                {{ forecastDetail.maxTemperature }} /
-                {{ forecastDetail.minTemperature }}
-              </p>
-              <p class="weather-description">
-                {{ forecastDetail.weatherDescription }}
-              </p>
-            </div>
-          </div>
+          <img
+            [src]="forecast.dailyWeatherIcon"
+            alt="Weather Icon"
+            class="img-fluid"
+          />
+          <p class="temperature">
+            {{ forecast.maxTemperature }} /
+            {{ forecast.minTemperature }}
+          </p>
+          <p class="weather-description">
+            {{ forecast.weatherDescription }}
+          </p>
         </div>
       </td>
     </tr>

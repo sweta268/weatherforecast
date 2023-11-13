@@ -24,10 +24,12 @@ export class SearchComponent implements OnDestroy {
   minlength = '3';
   maxlength = '100';
   latlongmaxlength = '10';
-  latlongpattern = '^[0-9.]*$';
+  latlongpattern = '^[0-9.-]*$';
   submitclicked = false;
   latlongsubmitclicked = false;
   private subscription!: Subscription;
+  displaytemperatureUnit: string = 'Imperial';
+  errorMessage: any;
 
   constructor(
     private router: Router,
@@ -39,32 +41,40 @@ export class SearchComponent implements OnDestroy {
   }
 
   onSubmit(form: NgForm) {
+    this.errorMessage = '';
     this.submitclicked = true; //To handle validation error on city form
+    if ((this.latitude == '' || this.longitude == '') && this.cityName == '') {
+      this.errorMessage = 'Please enter city name or latitude and longitude';
+    } else if (form.valid) {
+      console.log(this.latitude, this.longitude);
 
-    if (form.valid) {
       this.submitclicked = false;
-      // this.searchWeather('metric');
+      this.searchWeather(this.temperatureUnit);
+      this.latitude = ''; //To clear latitude so users dont get confused between city and latitude
+      this.longitude = ''; //To clear longitude so users dont get confused between city and longitude
+      this.cityName = ''; //To clear latitude so users dont get confused between city and latitude
     }
   }
-  onSubmitLatLong(latlongForm: NgForm) {
-    this.latlongsubmitclicked = true; //To handle validation error on Latitude and longitude form
-    if (latlongForm.valid) {
-      this.latlongsubmitclicked = false;
-      // this.searchWeather('metric');
-    }
-  }
+
   searchWeather(selectedUnit: string) {
-    this.temperatureUnit =
+    this.displaytemperatureUnit =
       selectedUnit === 'imperial' ? 'Farenheit' : 'Celsius';
 
     if (this.cityName || (this.latitude && this.longitude)) {
       this.subscription = this.weatherService
         .getWeather(this.cityName, selectedUnit, this.latitude, this.longitude) //To get current weather from service
-        .subscribe((data) => {
-          this.weatherData = data; //To display current weather
-          this.weatherData.temperatureUnit = this.temperatureUnit; //To display temperature unit
-          this.weatherService.updateCurrentWeatherData(this.weatherData); //To update current weather data
-        });
+        .subscribe(
+          (data) => {
+            console.log(data);
+            this.weatherData = data; //To display current weather
+            this.weatherData.temperatureUnit = this.displaytemperatureUnit; //To display temperature unit
+            this.weatherService.updateCurrentWeatherData(this.weatherData); //To update current weather data
+          },
+          (error) => {
+            console.log(error);
+            this.errorMessage = error.error.message;
+          }
+        );
 
       this.subscription = this.weatherService
         .getFiveDayWeather(
@@ -74,10 +84,17 @@ export class SearchComponent implements OnDestroy {
           this.longitude,
           '40'
         ) //To get 5 day weather from service
-        .subscribe((data) => {
-          this.fiveDayWeather = data;
-          this.weatherService.updateFiveDayWeatherData(this.fiveDayWeather); //To update 5 day weather data
-        });
+        .subscribe(
+          (data) => {
+            console.log(data);
+            this.fiveDayWeather = data;
+            this.weatherService.updateFiveDayWeatherData(this.fiveDayWeather); //To update 5 day weather data
+          },
+          (error) => {
+            console.log(error);
+            this.errorMessage = error.error.message;
+          }
+        );
     }
   }
   ngOnDestroy() {

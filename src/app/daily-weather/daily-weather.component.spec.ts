@@ -82,11 +82,12 @@ describe('DailyWeatherComponent', () => {
     component.ngOnInit();
 
     // expect(component.dailyWeatherData).toEqual({
-    //   '2021-08-12': {
-    //     date: '2021-08-12',
-    //     temperature: 25,
-    //     description: 'clear sky',
-    //     icon: '01d',
+    //   '0': {
+    //     dailyWeatherIcon: 'https://openweathermap.org/img/wn/01n@2x.png',
+    //     date: '2023-11-13',
+    //     maxTemperature: '9.18',
+    //     minTemperature: '5.61',
+    //     weatherDescription: 'clear sky, scattered clouds, broken clouds',
     //   },
     // });
   });

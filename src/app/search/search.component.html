@@ -4,69 +4,24 @@
   <h2 class="mt-4">Welcome to the Weather Forecast</h2>
 
   <div class="input-group">
-    <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="row">
-      <label for="cityInput" class="input-label col-md-3"
-        >Search weather by City</label
-      >
-      <div class="col-md-6">
-        <input
-          type="text"
-          class="form-control"
-          name="cityName"
-          [(ngModel)]="cityName"
-          placeholder="Enter city name here"
-          required
-          [minlength]="minlength"
-          [maxlength]="maxlength"
-          [pattern]="pattern"
-          #cityNameInput="ngModel"
-        />
-      </div>
-      <div class="col-md-2">
-        <div class="input-group-append">
-          <button
-            type="submit"
-            tooltip="Farenheit"
-            class="btn btn-primary"
-            (click)="searchWeather('imperial')"
-          >
-            &deg;F
-          </button>
-          <button
-            tooltip="Celsius"
-            class="btn btn-primary"
-            (click)="searchWeather('metric')"
-          >
-            &deg;C
-          </button>
-        </div>
-      </div>
-      <div *ngIf="submitclicked && form.invalid" class="validation-error mt-2">
-        <div *ngIf="cityNameInput.errors?.['required']">
-          City name is required.
-        </div>
-        <div *ngIf="cityNameInput.errors?.['minlength']">
-          City name must be at least 3 characters long.
-        </div>
-        <div *ngIf="cityNameInput.errors?.['maxlength']">
-          City name cannot be more than 100 characters long.
-        </div>
-        <div *ngIf="cityNameInput.errors?.['pattern']">
-          City name can only contain letters and spaces.
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="seperator">OR</div>
-  <div class="input-group">
     <form
-      #latlongForm="ngForm"
-      (ngSubmit)="onSubmitLatLong(latlongForm)"
-      class="row"
+      #form="ngForm"
+      (ngSubmit)="onSubmit(form)"
+      class="row full-width-form"
     >
-      <label for="latlongInput" class="input-label col-md-4"
-        >Search weather by Latitude and Longitude</label
-      >
+      <input
+        type="text"
+        class="form-control col-md-3"
+        name="cityName"
+        [(ngModel)]="cityName"
+        placeholder="Enter city name"
+        [minlength]="minlength"
+        [maxlength]="maxlength"
+        [pattern]="pattern"
+        #cityNameInput="ngModel"
+      />
+
+      <div class="col-md-auto seperator">Or</div>
 
       <input
         type="text"
@@ -74,7 +29,6 @@
         name="latitude"
         [(ngModel)]="latitude"
         placeholder="Enter Latitude"
-        required
         [maxlength]="latlongmaxlength"
         [pattern]="latlongpattern"
         #latitudeInput="ngModel"
@@ -85,7 +39,6 @@
         name="longitude"
         [(ngModel)]="longitude"
         placeholder="Enter Longitude"
-        required
         [maxlength]="latlongmaxlength"
         [pattern]="latlongpattern"
         #longitudeInput="ngModel"
@@ -96,25 +49,27 @@
           type="submit"
           tooltip="Farenheit"
           class="btn btn-primary"
-          (click)="searchWeather('imperial')"
+          (click)="temperatureUnit = 'imperial'"
         >
           &deg;F
         </button>
         <button
-          type="submit"
           tooltip="Celsius"
           class="btn btn-primary"
-          (click)="searchWeather('metric')"
+          (click)="temperatureUnit = 'metric'"
         >
           &deg;C
         </button>
       </div>
-      <div
-        *ngIf="latlongsubmitclicked && latlongForm.invalid"
-        class="validation-error"
-      >
-        <div *ngIf="latitudeInput.errors?.['required']">
-          Latitude is required.
+      <div *ngIf="submitclicked && form.invalid" class="validation-error mt-2">
+        <div *ngIf="cityNameInput.errors?.['minlength']">
+          City name must be at least 3 characters long.
+        </div>
+        <div *ngIf="cityNameInput.errors?.['maxlength']">
+          City name cannot be more than 100 characters long.
+        </div>
+        <div *ngIf="cityNameInput.errors?.['pattern']">
+          City name can only contain letters and spaces.
         </div>
 
         <div *ngIf="latitudeInput.errors?.['maxlength']">
@@ -122,9 +77,6 @@
         </div>
         <div *ngIf="latitudeInput.errors?.['pattern']">
           Latitude can only numbers.
-        </div>
-        <div *ngIf="longitudeInput.errors?.['required']">
-          Longitude is required.
         </div>
 
         <div *ngIf="longitudeInput.errors?.['maxlength']">
@@ -137,6 +89,10 @@
     </form>
   </div>
 
+  <div>
+    <h5 class="validation-error">{{ this.errorMessage }}</h5>
+    <!-- <img src="../../assets/404.jpg" *ngIf="this.errorMessage" alt="404" /> -->
+  </div>
   <!-- Current Weather data -->
   <app-current-weather
     *ngIf="weatherData"

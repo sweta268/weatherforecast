@@ -11,7 +11,7 @@ import { DatePipe } from '@angular/common';
 export class DailyWeatherComponent {
   @Input() FiveDayWeather: any;
   dailyWeatherData: { [key: string]: any } = {};
-
+  dailyForecast: any;
   constructor(
     private weatherService: WeatherService,
     private datePipe: DatePipe
@@ -20,8 +20,8 @@ export class DailyWeatherComponent {
   ngOnInit() {
     this.weatherService.fiveDayData.subscribe((data) => {
       if (data) {
-        const dailyForecast = this.processDailyForecast(data);
-        console.log(dailyForecast);
+        this.dailyForecast = this.processDailyForecast(data);
+        console.log(this.dailyForecast);
         // ... process data as needed ...
       }
     });
