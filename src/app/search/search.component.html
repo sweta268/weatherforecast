@@ -1,134 +1,111 @@
 <!-- search-bar.component.html -->
 
-<div class="container background-image">
+<div class="container">
   <h2 class="mt-4">Welcome to the Weather Forecast</h2>
 
-  <div class="input-group mb-4">
-    <label for="cityInput" class="input-label">Search weather by City</label>
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="cityName"
-      placeholder="Search Weather by a city"
-    />
-    <div class="input-group-append">
-      <button class="btn btn-primary" (click)="searchWeather('imperial')">
-        Fahrenheit
-      </button>
-      <button class="btn btn-primary" (click)="searchWeather('metric')">
-        Celsius
-      </button>
-    </div>
-  </div>
-  <div class="seperator">OR</div>
-  <div class="input-group mb-4">
-    <label for="cityInput" class="input-label"
-      >Search weather by Latitude and Longitude</label
+  <div class="input-group">
+    <form
+      #form="ngForm"
+      (ngSubmit)="onSubmit(form)"
+      class="row full-width-form"
     >
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="latitude"
-      placeholder="Enter Latitude"
-    />
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="longitude"
-      placeholder="Enter Longitude"
-    />
-    <div class="input-group-append">
-      <button class="btn btn-primary" (click)="searchWeather('imperial')">
-        Fahrenheit
-      </button>
-      <button class="btn btn-primary" (click)="searchWeather('metric')">
-        Celsius
-      </button>
-    </div>
+      <input
+        type="text"
+        class="form-control col-md-3"
+        name="cityName"
+        [(ngModel)]="cityName"
+        placeholder="Enter city name"
+        [minlength]="minlength"
+        [maxlength]="maxlength"
+        [pattern]="pattern"
+        #cityNameInput="ngModel"
+      />
+
+      <div class="col-md-auto seperator">Or</div>
+
+      <input
+        type="text"
+        class="form-control col-md-3"
+        name="latitude"
+        [(ngModel)]="latitude"
+        placeholder="Enter Latitude"
+        [maxlength]="latlongmaxlength"
+        [pattern]="latlongpattern"
+        #latitudeInput="ngModel"
+      />
+      <input
+        type="text"
+        class="form-control col-md-3"
+        name="longitude"
+        [(ngModel)]="longitude"
+        placeholder="Enter Longitude"
+        [maxlength]="latlongmaxlength"
+        [pattern]="latlongpattern"
+        #longitudeInput="ngModel"
+      />
+
+      <div class="input-group-append col-md-2">
+        <button
+          type="submit"
+          tooltip="Farenheit"
+          class="btn btn-primary"
+          (click)="temperatureUnit = 'imperial'"
+        >
+          &deg;F
+        </button>
+        <button
+          tooltip="Celsius"
+          class="btn btn-primary"
+          (click)="temperatureUnit = 'metric'"
+        >
+          &deg;C
+        </button>
+      </div>
+      <div *ngIf="submitclicked && form.invalid" class="validation-error mt-2">
+        <div *ngIf="cityNameInput.errors?.['minlength']">
+          City name must be at least 3 characters long.
+        </div>
+        <div *ngIf="cityNameInput.errors?.['maxlength']">
+          City name cannot be more than 100 characters long.
+        </div>
+        <div *ngIf="cityNameInput.errors?.['pattern']">
+          City name can only contain letters and spaces.
+        </div>
+
+        <div *ngIf="latitudeInput.errors?.['maxlength']">
+          Latitude cannot be more than 10 characters long.
+        </div>
+        <div *ngIf="latitudeInput.errors?.['pattern']">
+          Latitude can only numbers.
+        </div>
+
+        <div *ngIf="longitudeInput.errors?.['maxlength']">
+          Longitude cannot be more than 10 characters long.
+        </div>
+        <div *ngIf="longitudeInput.errors?.['pattern']">
+          Longitude can only numbers.
+        </div>
+      </div>
+    </form>
   </div>
 
-  <!-- Current Weather data -->
-  <div *ngIf="WeatherData" class="mb-4">
-    <h3 class="text-center">
-      {{ WeatherData.name }}, {{ WeatherData.sys.country }}
-    </h3>
-    <h4 class="text-center">
-      Displaying current weather in {{ temperatureUnit }}
-    </h4>
-    <table>
-      <tbody class="text-left">
-        <tr>
-          <td>
-            Temperature:
-            {{ temp }}
-          </td>
-          <td rowspan="5">
-            <img
-              [src]="overallWeathericon"
-              alt="Weather Icon"
-              class="img-fluid"
-            />
-          </td>
-        </tr>
-        <tr>
-          Feels Like:
-          {{
-            feelsLike
-          }}
-        </tr>
-        <tr>
-          Humidity:
-          {{
-            humidity
-          }}
-        </tr>
-        <tr>
-          Wind Speed:
-          {{
-            wind_speed
-          }}
-        </tr>
-        <tr>
-          Description:
-          {{
-            description
-          }}
-        </tr>
-      </tbody>
-    </table>
+  <div>
+    <h5 class="validation-error">{{ this.errorMessage }}</h5>
+    <!-- <img src="../../assets/404.jpg" *ngIf="this.errorMessage" alt="404" /> -->
   </div>
+  <!-- Current Weather data -->
+  <app-current-weather
+    *ngIf="weatherData"
+    [WeatherData]="weatherData"
+  ></app-current-weather>
+
   <!-- Current Weather data -->
 
   <!-- 5 day Weather data -->
-  <table>
-    <thead class="text-left">
-      <tr>
-        <td *ngFor="let forecast of dailyWeatherData | keyvalue">
-          <div class="column">
-            <p class="date">
-              {{ forecast.key | date : "shortDate" }},
-              {{ forecast.key | date : "EEE" }}
-            </p>
-            <div *ngFor="let forecastDetail of forecast.value">
-              <div class="forecast-item">
-                <img
-                  [src]="forecastDetail.dailyWeatherIcon"
-                  alt="Weather Icon"
-                  class="img-fluid"
-                />
-                <p class="weather-description">
-                  {{ forecastDetail.weatherDescription }}
-                </p>
-                <p class="temperature">
-                  {{ forecastDetail.maxTemperature }} /
-                  {{ forecastDetail.minTemperature }}
-                </p>
-              </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-    </thead>
-  </table>
+  <app-daily-weather
+    *ngIf="fiveDayWeather"
+    [FiveDayWeather]="fiveDayWeather"
+  ></app-daily-weather>
+
   <!-- 5 day Weather data -->
 </div>

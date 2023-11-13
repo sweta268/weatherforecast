@@ -1,0 +1,64 @@
+table {
+  margin-top: 20px;
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+  }
+
+  img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+
+  .column {
+    width: 200px;
+    height: 250px;
+    padding: 5px;
+    margin: 5px;
+    background-color: #e6e6ff;
+  }
+
+  .date {
+    font-weight: bold;
+  }
+
+  .forecast-item {
+    text-align: center;
+    margin-top: 10px;
+
+    img {
+      max-height: 50px;
+    }
+
+    .weather-description {
+      margin-top: 5px;
+    }
+
+    .temperature {
+      margin-top: 5px;
+      font-weight: bold;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+
+    th,
+    td {
+      display: block;
+      width: 100%;
+      border: none;
+    }
+
+    .column {
+      width: 100%;
+      height: auto;
+      margin: 0;
+    }
+  }
+}

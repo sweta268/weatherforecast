@@ -1,0 +1,28 @@
+<!-- 5 day Weather data -->
+<table *ngIf="FiveDayWeather">
+  <thead class="text-left">
+    <tr>
+      <td *ngFor="let forecast of dailyForecast">
+        <div class="column">
+          <p class="date">
+            {{ forecast.date | date : "shortDate" }},
+            {{ forecast.date | date : "EEE" }}
+          </p>
+          <img
+            [src]="forecast.dailyWeatherIcon"
+            alt="Weather Icon"
+            class="img-fluid"
+          />
+          <p class="temperature">
+            {{ forecast.maxTemperature }} /
+            {{ forecast.minTemperature }}
+          </p>
+          <p class="weather-description">
+            {{ forecast.weatherDescription }}
+          </p>
+        </div>
+      </td>
+    </tr>
+  </thead>
+</table>
+<!-- 5 day Weather data -->
