@@ -26,7 +26,6 @@ export class SearchComponent implements OnDestroy {
   latlongmaxlength = '10';
   latlongpattern = '^[0-9.-]*$';
   submitclicked = false;
-  latlongsubmitclicked = false;
   private subscription!: Subscription;
   displaytemperatureUnit: string = 'Imperial';
   errorMessage: any;
@@ -72,7 +71,7 @@ export class SearchComponent implements OnDestroy {
           },
           (error) => {
             console.log(error);
-            this.errorMessage = error.error.message;
+            this.errorMessage = error.error.message; // To display error message
           }
         );
 
@@ -92,12 +91,12 @@ export class SearchComponent implements OnDestroy {
           },
           (error) => {
             console.log(error);
-            this.errorMessage = error.error.message;
+            this.errorMessage = error.error.message; // To display error message
           }
         );
     }
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription.unsubscribe(); //Destroy subscription
   }
 }

@@ -20,9 +20,7 @@ export class DailyWeatherComponent {
   ngOnInit() {
     this.weatherService.fiveDayData.subscribe((data) => {
       if (data) {
-        this.dailyForecast = this.processDailyForecast(data);
-        console.log(this.dailyForecast);
-        // ... process data as needed ...
+        this.dailyForecast = this.processDailyForecast(data); // Call function to process the data
       }
     });
   }
@@ -31,20 +29,22 @@ export class DailyWeatherComponent {
     const dailyWeatherData: { [key: string]: any } = {};
 
     if (!bulkWeatherData || !bulkWeatherData.list) {
-      console.log('Daily weather data not available');
+      console.log('Daily weather data not available'); //Handle error
       return [];
     }
 
     bulkWeatherData.list.forEach((forecast: any) => {
+      //This is the data from the API
       const date =
         this.datePipe.transform(forecast.dt * 1000, 'yyyy-MM-dd') || '';
 
       if (!dailyWeatherData[date]) {
+        // Check if the date is already in the array
         dailyWeatherData[date] = {
-          description: '',
-          minTemp: 999,
-          maxTemp: -999,
-          icon: undefined,
+          description: '', //Initialize the description
+          minTemp: 999, //Initialize the minTemp
+          maxTemp: -999, // Initialize the maxTemp
+          icon: undefined, //Initialize the icon
         };
       }
 
@@ -52,9 +52,10 @@ export class DailyWeatherComponent {
 
       if (!weatherData.description.includes(forecast.weather[0].description)) {
         if (weatherData.description !== '') {
+          //Handle comma between weather descriptions
           weatherData.description += ', ';
         }
-        weatherData.description += forecast.weather[0].description;
+        weatherData.description += forecast.weather[0].description; //Concat unique weather description
       }
 
       if (forecast.main.temp_min < weatherData.minTemp) {
@@ -69,6 +70,7 @@ export class DailyWeatherComponent {
     });
 
     return Object.keys(dailyWeatherData).map((date) => ({
+      //Convert object to array
       date,
       weatherDescription: dailyWeatherData[date].description,
       minTemperature: dailyWeatherData[date].minTemp,
