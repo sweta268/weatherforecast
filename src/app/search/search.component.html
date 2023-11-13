@@ -1,66 +1,140 @@
 <!-- search-bar.component.html -->
 
-<div class="container background-image">
+<div class="container">
   <h2 class="mt-4">Welcome to the Weather Forecast</h2>
 
-  <div class="input-group mb-4">
-    <label for="cityInput" class="input-label">Search weather by City</label>
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="cityName"
-      placeholder="Search Weather by a city"
-    />
-    <div class="input-group-append">
-      <button
-        tooltip="Farenheit"
-        class="btn btn-primary"
-        (click)="searchWeather('imperial')"
+  <div class="input-group">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" class="row">
+      <label for="cityInput" class="input-label col-md-3"
+        >Search weather by City</label
       >
-        &deg;F
-      </button>
-      <button
-        tooltip="Celsius"
-        class="btn btn-primary"
-        (click)="searchWeather('metric')"
-      >
-        &deg;C
-      </button>
-    </div>
+      <div class="col-md-6">
+        <input
+          type="text"
+          class="form-control"
+          name="cityName"
+          [(ngModel)]="cityName"
+          placeholder="Enter city name here"
+          required
+          [minlength]="minlength"
+          [maxlength]="maxlength"
+          [pattern]="pattern"
+          #cityNameInput="ngModel"
+        />
+      </div>
+      <div class="col-md-2">
+        <div class="input-group-append">
+          <button
+            type="submit"
+            tooltip="Farenheit"
+            class="btn btn-primary"
+            (click)="searchWeather('imperial')"
+          >
+            &deg;F
+          </button>
+          <button
+            tooltip="Celsius"
+            class="btn btn-primary"
+            (click)="searchWeather('metric')"
+          >
+            &deg;C
+          </button>
+        </div>
+      </div>
+      <div *ngIf="submitclicked && form.invalid" class="validation-error mt-2">
+        <div *ngIf="cityNameInput.errors?.['required']">
+          City name is required.
+        </div>
+        <div *ngIf="cityNameInput.errors?.['minlength']">
+          City name must be at least 3 characters long.
+        </div>
+        <div *ngIf="cityNameInput.errors?.['maxlength']">
+          City name cannot be more than 100 characters long.
+        </div>
+        <div *ngIf="cityNameInput.errors?.['pattern']">
+          City name can only contain letters and spaces.
+        </div>
+      </div>
+    </form>
   </div>
   <div class="seperator">OR</div>
-  <div class="input-group mb-4">
-    <label for="cityInput" class="input-label"
-      >Search weather by Latitude and Longitude</label
+  <div class="input-group">
+    <form
+      #latlongForm="ngForm"
+      (ngSubmit)="onSubmitLatLong(latlongForm)"
+      class="row"
     >
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="latitude"
-      placeholder="Enter Latitude"
-    />
-    <input
-      type="text"
-      class="form-control"
-      [(ngModel)]="longitude"
-      placeholder="Enter Longitude"
-    />
-    <div class="input-group-append">
-      <button
-        tooltip="Farenheit"
-        class="btn btn-primary"
-        (click)="searchWeather('imperial')"
+      <label for="latlongInput" class="input-label col-md-4"
+        >Search weather by Latitude and Longitude</label
       >
-        &deg;F
-      </button>
-      <button
-        tooltip="Celsius"
-        class="btn btn-primary"
-        (click)="searchWeather('metric')"
+
+      <input
+        type="text"
+        class="form-control col-md-3"
+        name="latitude"
+        [(ngModel)]="latitude"
+        placeholder="Enter Latitude"
+        required
+        [maxlength]="latlongmaxlength"
+        [pattern]="latlongpattern"
+        #latitudeInput="ngModel"
+      />
+      <input
+        type="text"
+        class="form-control col-md-3"
+        name="longitude"
+        [(ngModel)]="longitude"
+        placeholder="Enter Longitude"
+        required
+        [maxlength]="latlongmaxlength"
+        [pattern]="latlongpattern"
+        #longitudeInput="ngModel"
+      />
+
+      <div class="input-group-append col-md-2">
+        <button
+          type="submit"
+          tooltip="Farenheit"
+          class="btn btn-primary"
+          (click)="searchWeather('imperial')"
+        >
+          &deg;F
+        </button>
+        <button
+          type="submit"
+          tooltip="Celsius"
+          class="btn btn-primary"
+          (click)="searchWeather('metric')"
+        >
+          &deg;C
+        </button>
+      </div>
+      <div
+        *ngIf="latlongsubmitclicked && latlongForm.invalid"
+        class="validation-error"
       >
-        &deg;C
-      </button>
-    </div>
+        <div *ngIf="latitudeInput.errors?.['required']">
+          Latitude is required.
+        </div>
+
+        <div *ngIf="latitudeInput.errors?.['maxlength']">
+          Latitude cannot be more than 10 characters long.
+        </div>
+        <div *ngIf="latitudeInput.errors?.['pattern']">
+          Latitude can only numbers.
+        </div>
+        <div *ngIf="longitudeInput.errors?.['required']">
+          Longitude is required.
+        </div>
+
+        <div *ngIf="longitudeInput.errors?.['maxlength']">
+          Longitude cannot be more than 10 characters long.
+        </div>
+        <div *ngIf="longitudeInput.errors?.['pattern']">
+          Longitude can only numbers.
+        </div>
+      </div>
+    </form>
   </div>
 
   <!-- Current Weather data -->

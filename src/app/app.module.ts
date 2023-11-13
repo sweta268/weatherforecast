@@ -8,7 +8,7 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SearchComponent } from './search/search.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CurrentWeatherComponent } from './current-weather/current-weather.component';
 import { DailyWeatherComponent } from './daily-weather/daily-weather.component';
@@ -26,6 +26,7 @@ import { DailyWeatherComponent } from './daily-weather/daily-weather.component';
     HttpClientModule,
     FormsModule,
     CommonModule,
+    ReactiveFormsModule,
   ],
   providers: [provideClientHydration()],
   bootstrap: [AppComponent],

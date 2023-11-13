@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { WeatherService } from '../weather.service';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { CommonModule, DatePipe } from '@angular/common';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { DatePipe } from '@angular/common';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -13,30 +12,20 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   providers: [DatePipe],
 })
 export class SearchComponent {
-  cityName: string = '';
+  cityName = '';
   weatherData: any;
-  feelsLike: any;
-  pressure: any;
-  temp: any;
-  temp_max: any;
-  temp_min: any;
   fiveDayWeather: any;
-  fiveDayForecast: any;
   dailyWeatherData: { [key: string]: any[] } = {};
-  humidity: any;
-  wind_speed: any;
-  description: any;
-
-  minTemp: any;
-  maxTemp: any;
-  averageWeather: any;
-  averageWeatherDescription: any = '';
-  previousDate: any = '';
-  latitude: any;
-  longitude: any;
-  temperatureUnit: string = '';
-  overallWeathericon: string = '';
-  dailyWeatherIcon: string = '';
+  latitude: any = '';
+  longitude: any = '';
+  temperatureUnit = '';
+  pattern = '^[a-zA-Z ]*$';
+  minlength = '3';
+  maxlength = '100';
+  latlongmaxlength = '10';
+  latlongpattern = '^[0-9.]*$';
+  submitclicked = false;
+  latlongsubmitclicked = false;
 
   constructor(
     private router: Router,
@@ -45,41 +34,45 @@ export class SearchComponent {
     private datePipe: DatePipe
   ) {}
 
-  searchWeather(selectedUnit: string) {
-    if (selectedUnit === 'imperial') {
-      this.temperatureUnit = 'Farenheit'; // To show the selected unit on FE
-    }
-    if (selectedUnit === 'metric') {
-      this.temperatureUnit = 'Celsius'; // To show the selected unit on FE
-    }
-    if (this.cityName) {
-      this.weatherService
-        .getWeather(this.cityName, selectedUnit)
-        .subscribe((data) => {
-          this.weatherData = data;
-          this.weatherData.temperatureUnit = this.temperatureUnit;
+  onSubmit(form: NgForm) {
+    this.submitclicked = true; //To handle validation error on city form
 
-          this.weatherService.updateCurrentWeatherData(this.weatherData); // Update BehaviorSubject
-        });
-      this.weatherService
-        .getFiveDayWeather(this.cityName, selectedUnit, '40')
-        .subscribe((data) => {
-          this.fiveDayWeather = data; //Five Day Weather Data by city
-          this.weatherService.updateFiveDayWeatherData(this.fiveDayWeather); // Update BehaviorSubject
-        });
+    if (form.valid) {
+      this.submitclicked = false;
+      // this.searchWeather('metric');
     }
-    if (this.latitude && this.longitude) {
+  }
+  onSubmitLatLong(latlongForm: NgForm) {
+    this.latlongsubmitclicked = true; //To handle validation error on Latitude and longitude form
+    if (latlongForm.valid) {
+      this.latlongsubmitclicked = false;
+      // this.searchWeather('metric');
+    }
+  }
+  searchWeather(selectedUnit: string) {
+    this.temperatureUnit =
+      selectedUnit === 'imperial' ? 'Farenheit' : 'Celsius';
+
+    if (this.cityName || (this.latitude && this.longitude)) {
       this.weatherService
-        .getWeatherBylatLong(this.latitude, this.longitude, selectedUnit)
+        .getWeather(this.cityName, selectedUnit, this.latitude, this.longitude) //To get current weather from service
         .subscribe((data) => {
-          this.weatherData = data;
-          this.weatherService.updateCurrentWeatherData(this.weatherData); // Update BehaviorSubject
+          this.weatherData = data; //To display current weather
+          this.weatherData.temperatureUnit = this.temperatureUnit; //To display temperature unit
+          this.weatherService.updateCurrentWeatherData(this.weatherData); //To update current weather data
         });
+
       this.weatherService
-        .getFiveDayWeatherBylatLong(this.latitude, this.longitude, selectedUnit)
+        .getFiveDayWeather(
+          this.cityName,
+          selectedUnit,
+          this.latitude,
+          this.longitude,
+          '40'
+        ) //To get 5 day weather from service
         .subscribe((data) => {
-          this.fiveDayWeather = data; //Five Day Weather Data by latitude and longitude
-          this.weatherService.updateFiveDayWeatherData(this.fiveDayWeather); // Update BehaviorSubject
+          this.fiveDayWeather = data;
+          this.weatherService.updateFiveDayWeatherData(this.fiveDayWeather); //To update 5 day weather data
         });
     }
   }
