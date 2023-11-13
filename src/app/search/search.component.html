@@ -19,9 +19,10 @@
         [maxlength]="maxlength"
         [pattern]="pattern"
         #cityNameInput="ngModel"
+        (focus)="clearInput('city')"
       />
 
-      <div class="col-md-auto seperator">Or</div>
+      <div class="col-md-auto seperator">OR</div>
 
       <input
         type="text"
@@ -32,6 +33,7 @@
         [maxlength]="latlongmaxlength"
         [pattern]="latlongpattern"
         #latitudeInput="ngModel"
+        (focus)="clearInput('latitude')"
       />
       <input
         type="text"
@@ -42,19 +44,28 @@
         [maxlength]="latlongmaxlength"
         [pattern]="latlongpattern"
         #longitudeInput="ngModel"
+        (focus)="clearInput('longitude')"
       />
 
       <div class="input-group-append col-md-2">
         <button
           type="submit"
-          tooltip="Farenheit"
+          matTooltip="Search weather"
+          class="btn btn-primary"
+          (click)="temperatureUnit = 'imperial'"
+        >
+          Search
+        </button>
+        <button
+          type="submit"
+          matTooltip="Search weather by Fahrenheit"
           class="btn btn-primary"
           (click)="temperatureUnit = 'imperial'"
         >
           &deg;F
         </button>
         <button
-          tooltip="Celsius"
+          matTooltip="Search weather by Celsius"
           class="btn btn-primary"
           (click)="temperatureUnit = 'metric'"
         >

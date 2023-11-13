@@ -21,7 +21,6 @@ export class CurrentWeatherComponent {
     this.weatherService.currentWeatherData.subscribe((data) => {
       if (data) {
         this.processCurrentWeather(data);
-        // ... process data as needed ...
       }
     });
   }
