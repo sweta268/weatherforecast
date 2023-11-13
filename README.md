@@ -10,17 +10,7 @@ Please follow the below steps to set up the project
 1.  Install node from https://nodejs.org/en/download
 2.  Install npm using https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 3.  Install Angular CLI using npm install -g @angular/cli
-
-For the best experience please use chrome browser
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+4.  Install npm packages: npm i
+5.  Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+6.  Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.For the best experience please use chrome browser
+7.  Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
