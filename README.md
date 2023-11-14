@@ -19,8 +19,8 @@ Output: Weather for current day and 5 days after curent day.
 6.  Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.For the best experience please use chrome browser
 7.  Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-- \*Code Overview\*\*
-  The project uses **[Openweather map API]** to display weather details. Weather.service.ts gets the weather from openweathermap API. You can use your own key by replacing the value of key variable. Search component gets calls the api's of weather service to get the weather data. The project is divided into 3 main components.
+- **Code Overview**
+  The project uses \*\*[Openweather map API]\*\* to display weather details. Weather.service.ts gets the weather from openweathermap API. You can use your own key by replacing the value of key variable. Search component gets calls the api's of weather service to get the weather data. The project is divided into 3 main components.
 
 1. Search weather component gets the user input data and passes the data to the current weather component and daily weather component in raw form.
 2. Current weather component processes and displays current weather data.
