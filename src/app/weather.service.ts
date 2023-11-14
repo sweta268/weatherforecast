@@ -13,6 +13,7 @@ export class WeatherService {
   constructor(private http: HttpClient) {}
 
   getWeather(
+    // Today weather
     city: string,
     selectedUnit: string,
     latitude: string,
@@ -23,6 +24,7 @@ export class WeatherService {
     );
   }
   getFiveDayWeather(
+    //5 day weather
     city: string,
     selectedUnit: string,
     lattitude: string,
@@ -35,9 +37,9 @@ export class WeatherService {
   }
 
   updateCurrentWeatherData(data: any) {
-    this.currentWeatherData.next(data);
+    this.currentWeatherData.next(data); // next() method is used to update the value of BehaviorSubject in other components
   }
   updateFiveDayWeatherData(data: any) {
-    this.fiveDayData.next(data);
+    this.fiveDayData.next(data); // next() method is used to update the value of BehaviorSubject in other components
   }
 }
