@@ -9,7 +9,6 @@ import { DatePipe } from '@angular/common';
   providers: [DatePipe],
 })
 export class DailyWeatherComponent {
-  @Input() FiveDayWeather: any;
   dailyWeatherData: { [key: string]: any } = {};
   dailyForecast: any;
   constructor(
@@ -18,7 +17,7 @@ export class DailyWeatherComponent {
   ) {}
 
   ngOnInit() {
-    this.weatherService.fiveDayData.subscribe((data) => {
+    this.weatherService.dailyWeatherData.subscribe((data) => {
       if (data) {
         this.dailyForecast = this.processDailyForecast(data); // Call function to process the data
       }
@@ -52,7 +51,7 @@ export class DailyWeatherComponent {
 
       if (!weatherData.description.includes(forecast.weather[0].description)) {
         if (weatherData.description !== '') {
-          //Handle comma between weather descriptions
+          //Dont add  comma between weather description for first time but add it all the subsquent times
           weatherData.description += ', ';
         }
         weatherData.description += forecast.weather[0].description; //Concat unique weather description

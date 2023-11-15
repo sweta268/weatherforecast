@@ -27,24 +27,6 @@ table {
     font-weight: bold;
   }
 
-  .forecast-item {
-    text-align: center;
-    margin-top: 10px;
-
-    img {
-      max-height: 50px;
-    }
-
-    .weather-description {
-      margin-top: 5px;
-    }
-
-    .temperature {
-      margin-top: 5px;
-      font-weight: bold;
-    }
-  }
-
   @media (max-width: 768px) {
     display: block;
 

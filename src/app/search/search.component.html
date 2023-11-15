@@ -105,18 +105,12 @@
     <!-- <img src="../../assets/404.jpg" *ngIf="this.errorMessage" alt="404" /> -->
   </div>
   <!-- Current Weather data -->
-  <app-current-weather
-    *ngIf="weatherData"
-    [WeatherData]="weatherData"
-  ></app-current-weather>
+  <app-current-weather *ngIf="currentForecast"></app-current-weather>
 
   <!-- Current Weather data -->
 
   <!-- 5 day Weather data -->
-  <app-daily-weather
-    *ngIf="fiveDayWeather"
-    [FiveDayWeather]="fiveDayWeather"
-  ></app-daily-weather>
+  <app-daily-weather *ngIf="dailyForecast"></app-daily-weather>
 
   <!-- 5 day Weather data -->
 </div>

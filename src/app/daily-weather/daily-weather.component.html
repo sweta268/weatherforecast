@@ -1,8 +1,9 @@
 <!-- 5 day Weather data -->
-<table *ngIf="FiveDayWeather">
+<table *ngIf="dailyForecast">
   <thead class="text-left">
     <tr>
       <td *ngFor="let forecast of dailyForecast">
+        <!-- 5 day Weather data loop -->
         <div class="column">
           <p class="date">
             {{ forecast.date | date : "shortDate" }},

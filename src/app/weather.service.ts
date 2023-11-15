@@ -9,7 +9,7 @@ export class WeatherService {
   private key = 'cad9e13fc39df29887335cb223079816';
   private url = 'https://api.openweathermap.org/data/2.5';
   currentWeatherData = new BehaviorSubject<any>(null);
-  fiveDayData = new BehaviorSubject<any>(null);
+  dailyWeatherData = new BehaviorSubject<any>(null);
   constructor(private http: HttpClient) {}
 
   getWeather(
@@ -23,7 +23,7 @@ export class WeatherService {
       `${this.url}/weather?q=${city}&appid=${this.key}&units=${selectedUnit}&lat=${latitude}&lon=${longitude}`
     );
   }
-  getFiveDayWeather(
+  getDailyWeather(
     //5 day weather
     city: string,
     selectedUnit: string,
@@ -39,7 +39,7 @@ export class WeatherService {
   updateCurrentWeatherData(data: any) {
     this.currentWeatherData.next(data); // next() method is used to update the value of BehaviorSubject in other components
   }
-  updateFiveDayWeatherData(data: any) {
-    this.fiveDayData.next(data); // next() method is used to update the value of BehaviorSubject in other components
+  updateDailyWeatherData(data: any) {
+    this.dailyWeatherData.next(data); // next() method is used to update the value of BehaviorSubject in other components
   }
 }
