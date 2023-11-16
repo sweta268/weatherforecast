@@ -1,33 +1,35 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormsModule, NgForm, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { SearchComponent } from './search.component';
 import { WeatherService } from '../weather.service';
 import { DatePipe } from '@angular/common';
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import { of, throwError } from 'rxjs';
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
   let weatherService: WeatherService;
-
+  let httpTestingController: HttpTestingController;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule,
-        ReactiveFormsModule,
-        FormsModule,
-      ],
+      imports: [RouterTestingModule, FormsModule, HttpClientTestingModule],
       declarations: [SearchComponent],
-      providers: [WeatherService, DatePipe],
+      providers: [NgForm, WeatherService, DatePipe],
     }).compileComponents();
-  });
-
-  beforeEach(() => {
     fixture = TestBed.createComponent(SearchComponent);
     component = fixture.componentInstance;
     weatherService = TestBed.inject(WeatherService);
@@ -42,47 +44,59 @@ describe('SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  interface WeatherData {
-    // define the WeatherData interface
-  }
+  it('should display error message when form is submitted without data', () => {
+    const form = {
+      valid: true,
+      value: {
+        cityName: '',
+        latitude: '',
+        longitude: '',
+      },
+    } as any;
 
-  type TemperatureUnit = 'metric' | 'imperial';
+    component.onSubmit(form);
 
-  @Injectable({
-    providedIn: 'root',
-  })
-  class WeatherServiceMock {
-    getWeatherDataByCityName(
-      cityName: string,
-      temperatureUnit: TemperatureUnit
-    ): Observable<WeatherData> {
-      return {} as Observable<WeatherData>;
-    }
+    expect(component.errorMessage).toEqual(
+      'Please enter city name or latitude and longitude'
+    );
+  });
 
-    getWeatherDataByLatLong(
-      latitude: string,
-      longitude: string,
-      temperatureUnit: TemperatureUnit
-    ): Observable<WeatherData> {
-      return {} as Observable<WeatherData>;
-    }
-  }
+  it('should call searchWeather method with temperatureUnit when form is submitted with valid data', () => {
+    const unit = 'Imperial';
+    const form = {
+      valid: true,
+    } as any;
+    const cityInputElement: HTMLInputElement =
+      fixture.nativeElement.querySelector('input[name="cityName"]');
+    const latitudeInputElement: HTMLInputElement =
+      fixture.nativeElement.querySelector('input[name="latitude"]');
+    const longitudeInputElement: HTMLInputElement =
+      fixture.nativeElement.querySelector('input[name="longitude"]');
 
-  // describe('onSubmit', () => {
-  //   let spy: jasmine.Spy;
-  //   let weatherService: weatherService; // add type annotation
+    cityInputElement.value = 'New York';
+    latitudeInputElement.value = '';
+    longitudeInputElement.value = '';
+    cityInputElement.dispatchEvent(new Event('input')); // Simulate input event
+    latitudeInputElement.dispatchEvent(new Event('input')); // Simulate input event
+    longitudeInputElement.dispatchEvent(new Event('input')); // Simulate input event
 
-  //   beforeEach(() => {
-  //     weatherService = TestBed.inject(WeatherServiceMock); // update to use correct service
-  //     spy = spyOn(weatherService, 'getWeatherDataByCityName').and.callThrough();
-  //   });
+    spyOn(component, 'searchWeather');
+    component.onSubmit(form);
+    expect(component.searchWeather).toHaveBeenCalledWith('');
+  });
 
-  //   it('should call weatherService.getWeatherDataByCityName', () => {
-  //     const mockForm = {
-  //       valid: true,
-  //     } as NgForm;
-  //     component.onSubmit(mockForm);
-  //     expect(spy).toHaveBeenCalled();
-  //   });
-  // });
+  it('should handle error when API calls fail', fakeAsync(() => {
+    spyOn(weatherService, 'getWeather').and.returnValue(
+      throwError({ error: { message: 'Error!' } })
+    );
+    spyOn(weatherService, 'getDailyWeather').and.returnValue(
+      throwError({ error: { message: 'Error!' } })
+    );
+
+    component.cityName = 'New York';
+    component.searchWeather('metric');
+    tick();
+
+    expect(component.errorMessage).toEqual('Error!');
+  }));
 });

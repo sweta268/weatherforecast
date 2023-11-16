@@ -6,6 +6,7 @@ import { DailyWeatherComponent } from './daily-weather.component';
 import { WeatherService } from '../weather.service';
 import { DatePipe } from '@angular/common';
 import { of } from 'rxjs';
+
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -75,8 +76,43 @@ describe('DailyWeatherComponent', () => {
       ],
     };
 
-    spyOn(weatherService, 'getFiveDayWeather').and.returnValue(
-      of(bulkWeatherData)
+    spyOn(weatherService, 'getDailyWeather').and.returnValue(
+      of({
+        list: [
+          {
+            dt: 1628772000,
+            main: {
+              temp: 25,
+              feels_like: 27,
+              temp_min: 25,
+              temp_max: 25,
+              pressure: 1013,
+              humidity: 70,
+            },
+            weather: [
+              {
+                id: 800,
+                main: 'Clear',
+                description: 'clear sky',
+                icon: '01d',
+              },
+            ],
+            clouds: {
+              all: 0,
+            },
+            wind: {
+              speed: 2.57,
+              deg: 0,
+            },
+            visibility: 10000,
+            pop: 0,
+            sys: {
+              pod: 'd',
+            },
+            dt_txt: '2021-08-12 12:00:00',
+          },
+        ],
+      })
     );
 
     component.ngOnInit();
