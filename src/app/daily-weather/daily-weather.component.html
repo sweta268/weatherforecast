@@ -6,8 +6,9 @@
         <!-- 5 day Weather data loop -->
         <div class="column">
           <p class="date">
-            {{ forecast.date | date : "shortDate" }},
-            {{ forecast.date | date : "EEE" }}
+            <span class="date"> {{ forecast.date | date : "shortDate" }}</span
+            >,
+            <span class="day">{{ forecast.date | date : "EEE" }}</span>
           </p>
           <img
             [src]="forecast.dailyWeatherIcon"
@@ -15,8 +16,9 @@
             class="img-fluid"
           />
           <p class="temperature">
-            {{ forecast.maxTemperature }} /
-            {{ forecast.minTemperature }}
+            <span class="maxTemperature"> {{ forecast.maxTemperature }} </span>
+            /
+            <span class="minTemperature"> {{ forecast.minTemperature }}</span>
           </p>
           <p class="weather-description">
             {{ forecast.weatherDescription }}

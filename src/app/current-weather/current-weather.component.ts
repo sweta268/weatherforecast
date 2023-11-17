@@ -11,7 +11,7 @@ export class CurrentWeatherComponent {
   feelsLike: any;
   humidity: any;
   temp: any;
-  wind_speed: any;
+  windSpeed: any;
   description: any;
   overallWeathericon: any;
   WeatherData: any;
@@ -26,6 +26,7 @@ export class CurrentWeatherComponent {
   }
 
   processCurrentWeather(WeatherData: any) {
+    console.log(WeatherData);
     //Put all the current data in a variable so there is no business logic on html
     if (WeatherData && WeatherData?.main?.feels_like) {
       this.feelsLike = WeatherData.main.feels_like; //feels like weather
@@ -37,7 +38,7 @@ export class CurrentWeatherComponent {
       this.temp = WeatherData.main.temp; //current temperature
     }
     if (WeatherData && WeatherData?.wind?.speed) {
-      this.wind_speed = WeatherData.wind.speed; //Wind speed
+      this.windSpeed = WeatherData.wind.speed; //Wind speed
     }
     if (WeatherData && WeatherData?.weather) {
       this.description = WeatherData.weather[0].description; //Weather Description

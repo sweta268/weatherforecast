@@ -19,12 +19,13 @@ export class DailyWeatherComponent {
   ngOnInit() {
     this.weatherService.dailyWeatherData.subscribe((data) => {
       if (data) {
+        console.log(data);
         this.dailyForecast = this.processDailyForecast(data); // Call function to process the data
       }
     });
   }
 
-  private processDailyForecast(bulkWeatherData: { list: any }) {
+  processDailyForecast(bulkWeatherData: { list: any }) {
     const dailyWeatherData: { [key: string]: any } = {};
 
     if (!bulkWeatherData || !bulkWeatherData.list) {

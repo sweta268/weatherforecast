@@ -20,29 +20,22 @@
             [src]="overallWeathericon"
             alt="Weather Icon"
             class="img-fluid"
-          />{{ temp }}
-          {{ description }}
+          />
+          <span class="temp">{{ temp }} </span>
+          <span class="description">{{ description }}</span>
         </td>
       </tr>
       <tr>
         Feels Like:
-        {{
-          feelsLike
-        }}
+        <span class="feelsLike"> {{ feelsLike }}</span>
       </tr>
       <tr>
         Humidity:
-        {{
-          humidity
-        }}
-        %
+        <span class="humidity">{{ humidity }} %</span>
       </tr>
       <tr>
         Wind Speed:
-        {{
-          wind_speed
-        }}
-        mph
+        <span class="windSpeed"> {{ windSpeed }} mph</span>
       </tr>
     </tbody>
   </table>

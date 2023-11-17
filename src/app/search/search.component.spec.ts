@@ -80,9 +80,9 @@ describe('SearchComponent', () => {
     latitudeInputElement.dispatchEvent(new Event('input')); // Simulate input event
     longitudeInputElement.dispatchEvent(new Event('input')); // Simulate input event
 
-    spyOn(component, 'searchWeather');
-    component.onSubmit(form);
-    expect(component.searchWeather).toHaveBeenCalledWith('');
+    spyOn(component, 'searchWeather'); // Spy on the searchWeather method
+    component.onSubmit(form); // Call the onSubmit method
+    expect(component.searchWeather).toHaveBeenCalledWith(''); // Check if the searchWeather method was called with the expected value
   });
 
   it('should handle error when API calls fail', fakeAsync(() => {
@@ -93,10 +93,10 @@ describe('SearchComponent', () => {
       throwError({ error: { message: 'Error!' } })
     );
 
-    component.cityName = 'New York';
-    component.searchWeather('metric');
-    tick();
+    component.cityName = 'New York'; // Set the cityName property
+    component.searchWeather('metric'); // Call the searchWeather method
+    tick(); // Simulate the passage of time until all pending asynchronous activities finish
 
-    expect(component.errorMessage).toEqual('Error!');
+    expect(component.errorMessage).toEqual('Error!'); // Check if the errorMessage property has the expected value
   }));
 });
