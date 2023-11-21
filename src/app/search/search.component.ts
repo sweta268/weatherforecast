@@ -47,9 +47,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if ((this.latitude == '' || this.longitude == '') && this.cityName == '') {
       this.errorMessage = 'Please enter city name or latitude and longitude';
     } else if (form.valid) {
-      //console.log(this.latitude, this.longitude);
-
-      this.submitclicked = false;
+      // this.submitclicked = false;
       this.searchWeather(this.temperatureUnit);
     }
   }

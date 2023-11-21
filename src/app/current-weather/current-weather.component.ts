@@ -26,7 +26,6 @@ export class CurrentWeatherComponent {
   }
 
   processCurrentWeather(WeatherData: any) {
-    console.log(WeatherData);
     //Put all the current data in a variable so there is no business logic on html
     if (WeatherData && WeatherData?.main?.feels_like) {
       this.feelsLike = WeatherData.main.feels_like; //feels like weather
